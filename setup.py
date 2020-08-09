@@ -9,7 +9,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='ipleak',
-      version='0.1.1',
+      version='0.2.0',
       description='Python Tool to check your VPN.',
       long_description=long_description,
       author='profileid',
