@@ -21,12 +21,16 @@ def ipleak():
     if datav4:
         print(f"{datav4['country_name']} - {datav4['city_name']}")
 
-    requestdns = requests.get(
+    try:
+        requestdns = requests.get(
         f"https://{get_random_string(40)}.ipleak.net/json/")
-    if requestdns.status_code == 200:
-        datadns = requestdns.json()
-        print(
-            f"DNS: {datadns['ip']} - {datadns['country_name']} - {datadns['city_name']}")
+        if requestdns.status_code == 200:
+            datadns = requestdns.json()
+            print(
+                f"DNS: {datadns['ip']} - {datadns['country_name']} - {datadns['city_name']}")
+    except Exception as e:
+        pass
+
 
 def get_random_string(length):
     letters = string.ascii_lowercase
