@@ -48,8 +48,8 @@ class IPLeak():
 
 @click.command()
 def main():
-    ipleak()
+    IPLeak()
 
 
 if __name__ == "__main__":
-    IPLeak()
+    main()
