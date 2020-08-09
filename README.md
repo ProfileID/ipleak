@@ -14,6 +14,11 @@ Install via pypi
 pip install ipleak
 ```
 
+Update via pypi
+```bash
+pip install -U ipleak
+```
+
 Install via git
 ```bash
 pip install git+https://github.com/ProfileID/ipleak
