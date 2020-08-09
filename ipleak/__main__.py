@@ -4,42 +4,52 @@ import random
 import string
 import click
 
-def ipleak():
-    requestv4 = requests.get("https://ipv4.ipleak.net/json/")
 
-    if requestv4.status_code == 200:
-        datav4 = requestv4.json()
-        print(f"IPv4: {datav4['ip']}")
+class IPLeak():
+    def __init__(self):
+        self.urlIPv4 = "https://ipv4.ipleak.net/json/"
+        self.urlIPv6 = "https://ipv6.ipleak.net/json/"
+        self.urlDNS = f"https://{self.get_random_string(40)}.ipleak.net/json/"
 
-    try:
-        requestv6 = requests.get("https://ipv6.ipleak.net/json/")
-        datav6 = requestv6.json()
-        print(f"IPv6: {datav6['ip']}")
-    except Exception as e:
-        pass
+        self.getIP(self.urlIPv4, "IPv4")
+        self.getIP(self.urlIPv6, "IPv6")
+        self.getIP(self.urlDNS, "DNS")
 
-    if datav4:
-        print(f"{datav4['country_name']} - {datav4['city_name']}")
+    def get_random_string(self, length):
+        letters = string.ascii_lowercase
+        result_str = ''.join(random.choice(letters) for i in range(length))
+        
+        return result_str
 
-    try:
-        requestdns = requests.get(
-        f"https://{get_random_string(40)}.ipleak.net/json/")
-        if requestdns.status_code == 200:
-            datadns = requestdns.json()
-            print(
-                f"DNS: {datadns['ip']} - {datadns['country_name']} - {datadns['city_name']}")
-    except Exception as e:
-        pass
+    def getIP(self, url, title):
+        try:
+            request = requests.get(url)
+            if request.status_code == 200:
+                data = request.json()
 
+                if title:
+                    print()
+                    print(f"--- {title} ---")
 
-def get_random_string(length):
-    letters = string.ascii_lowercase
-    result_str = ''.join(random.choice(letters) for i in range(length))
-    return result_str
+                print(f"{data['ip']}")
+
+                if "country_name" in data and data["country_name"] is not None:
+                    print(f"Country: {data['country_name']}")
+
+                if "city_name" in data and data["city_name"] is not None:
+                    print(f"City: {data['city_name']}")
+
+        except Exception as e:
+            print()
+            if title:
+                print(f"--- {title} ---")
+            print("Not available")
+
 
 @click.command()
 def main():
     ipleak()
 
+
 if __name__ == "__main__":
-    main()
+    IPLeak()
