@@ -12,6 +12,7 @@ setup(name='ipleak',
       version='0.2.0',
       description='Python Tool to check your VPN.',
       long_description=long_description,
+      long_description_content_type='text/markdown'
       author='profileid',
       author_email='profileid@protonmail.com',
       url="https://github.com/ProfileID/ipleak",
