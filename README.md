@@ -6,7 +6,7 @@
 [![PyPI license](https://img.shields.io/pypi/l/ipleak.svg)](https://pypi.python.org/pypi/ipleak/)
 
 ## About IPLeak
-Python Tool to check your current IPv4, IPv6 and DNS Address to ensure your VPN is connected.
+Python Tool to check your current IPv4, IPv6 and DNS Address to ensure your VPN is connected and not leaking.
 
 ## Install package
 Install via pypi
