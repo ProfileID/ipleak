@@ -19,8 +19,11 @@ def get_ipleak_url(version: str, url: str) -> dict:
     try:
         request = request = requests.get(url)
         if request.status_code == 200:
-            data = request.json()
-            return data
+            if 'ip' in request:
+                data = request.json()
+                return data
+            else:
+                return {}
 
     except Exception as e:
         console.print(f'{version}: not available.', style='bold red')
