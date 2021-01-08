@@ -1,55 +1,71 @@
+from click.termui import style
 import requests
-import json
 import random
 import string
+import json
 import click
+import typer
+from rich.console import Console
+
+app = typer.Typer()
+console = Console()
+
+url_ipv4 = "https://ipv4.ipleak.net/json/"
+url_ipv6 = "https://ipv6.ipleak.net/json/"
+url_dns = f"https://{''.join(random.choice(string.ascii_lowercase) for i in range(40))}.ipleak.net/json/"
 
 
-class IPLeak():
-    def __init__(self):
-        self.urlIPv4 = "https://ipv4.ipleak.net/json/"
-        self.urlIPv6 = "https://ipv6.ipleak.net/json/"
-        self.urlDNS = f"https://{self.get_random_string(40)}.ipleak.net/json/"
+def get_ipleak_url(version: str, url: str) -> dict:
+    try:
+        request = request = requests.get(url)
+        if request.status_code == 200:
+            data = request.json()
+            return data
 
-        self.getIP(self.urlIPv4, "IPv4")
-        self.getIP(self.urlIPv6, "IPv6")
-        self.getIP(self.urlDNS, "DNS")
-
-    def get_random_string(self, length):
-        letters = string.ascii_lowercase
-        result_str = ''.join(random.choice(letters) for i in range(length))
-        
-        return result_str
-
-    def getIP(self, url, title):
-        try:
-            request = requests.get(url)
-            if request.status_code == 200:
-                data = request.json()
-
-                if title:
-                    print()
-                    print(f"--- {title} ---")
-
-                print(f"{data['ip']}")
-
-                if "country_name" in data and data["country_name"] is not None:
-                    print(f"Country: {data['country_name']}")
-
-                if "city_name" in data and data["city_name"] is not None:
-                    print(f"City: {data['city_name']}")
-
-        except Exception as e:
-            print()
-            if title:
-                print(f"--- {title} ---")
-            print("Not available")
+    except Exception as e:
+        console.print(f'{version}: not available.', style='bold red')
+        return {}
 
 
-@click.command()
-def main():
-    IPLeak()
+def print_ipleak_data(name: str, data: dict) -> None:
+    if data['country_name'] in data and data['city_name'] in data and data['country_name'] != None and data['city_name'] != None:
+        console.print(
+            f'{name}: {data["ip"]} - {data["country_name"]} {data["city_name"]}')
+    elif data['country_name'] in data and data['country_name'] != None:
+        console.print(f'{name}: {data["ip"]} - {data["country_name"]}')
+    else:
+        console.print(f'{name}: {data["ip"]}')
+
+
+@app.command()
+def ipv4():
+    data = get_ipleak_url("IPv4", url_ipv4)
+    if data is not {}:
+        print_ipleak_data("IPv4", data)
+
+
+@app.command()
+def ipv6():
+    data = get_ipleak_url("IPv6", url_ipv6)
+    if data is not {}:
+        print_ipleak_data("IPv6", data)
+
+
+@app.command()
+def dns():
+    data = get_ipleak_url("DNS", url_dns)
+    if data is not {}:
+        print_ipleak_data("DNS", data)
+
+
+@app.command()
+def all():
+    finished = False
+    with console.status('[bold green]Getting data...') as status:
+        ipv4()
+        ipv6()
+        dns()
 
 
 if __name__ == "__main__":
-    main()
+    app()
