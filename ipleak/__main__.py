@@ -23,6 +23,7 @@ def get_ipleak_url(version: str, url: str) -> dict:
                 data = request.json()
                 return data
             else:
+                console.print(f'{version}: not available.', style='bold red')
                 return {}
 
     except Exception as e:
