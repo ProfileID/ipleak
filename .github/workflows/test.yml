@@ -31,4 +31,7 @@ jobs:
         pip install .
     - name: Run tests
       run: |
-        ipleak
+        ipleak all
+        ipleak ipv4
+        ipleak ipv6
+        ipleak dns
