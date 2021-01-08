@@ -19,7 +19,7 @@ def get_ipleak_url(version: str, url: str) -> dict:
     try:
         request = request = requests.get(url)
         if request.status_code == 200:
-            if 'ip' in request:
+            if 'ip' in request.json():
                 data = request.json()
                 return data
             else:
