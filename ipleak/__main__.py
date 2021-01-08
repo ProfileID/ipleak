@@ -39,32 +39,33 @@ def print_ipleak_data(name: str, data: dict) -> None:
 
 @app.command()
 def ipv4():
-    data = get_ipleak_url("IPv4", url_ipv4)
-    if data is not {}:
-        print_ipleak_data("IPv4", data)
+    with console.status('[bold green]Getting data...') as status:
+        data = get_ipleak_url("IPv4", url_ipv4)
+        if data is not {}:
+            print_ipleak_data("IPv4", data)
 
 
 @app.command()
 def ipv6():
-    data = get_ipleak_url("IPv6", url_ipv6)
-    if data is not {}:
-        print_ipleak_data("IPv6", data)
+    with console.status('[bold green]Getting data...') as status:
+        data = get_ipleak_url("IPv6", url_ipv6)
+        if data is not {}:
+            print_ipleak_data("IPv6", data)
 
 
 @app.command()
 def dns():
-    data = get_ipleak_url("DNS", url_dns)
-    if data is not {}:
-        print_ipleak_data("DNS", data)
+    with console.status('[bold green]Getting data...') as status:
+        data = get_ipleak_url("DNS", url_dns)
+        if data is not {}:
+            print_ipleak_data("DNS", data)
 
 
 @app.command()
 def all():
-    finished = False
-    with console.status('[bold green]Getting data...') as status:
-        ipv4()
-        ipv6()
-        dns()
+    ipv4()
+    ipv6()
+    dns()
 
 
 def main():
