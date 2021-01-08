@@ -28,10 +28,10 @@ def get_ipleak_url(version: str, url: str) -> dict:
 
 
 def print_ipleak_data(name: str, data: dict) -> None:
-    if data['country_name'] in data and data['city_name'] in data and data['country_name'] != None and data['city_name'] != None:
+    if 'country_name' in data and 'city_name' in data and data['country_name'] != None and data['city_name'] != None:
         console.print(
             f'{name}: {data["ip"]} - {data["country_name"]} {data["city_name"]}')
-    elif data['country_name'] in data and data['country_name'] != None:
+    elif 'country_name' in data and data['country_name'] != None:
         console.print(f'{name}: {data["ip"]} - {data["country_name"]}')
     else:
         console.print(f'{name}: {data["ip"]}')
