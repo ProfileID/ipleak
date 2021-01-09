@@ -4,6 +4,7 @@ import random
 import string
 import json
 import click
+from requests.sessions import HTTPAdapter
 import typer
 from rich.console import Console
 
@@ -17,18 +18,23 @@ url_dns = f"https://{''.join(random.choice(string.ascii_lowercase) for i in rang
 
 def get_ipleak_url(version: str, url: str) -> dict:
     try:
-        request = request = requests.get(url)
+        session = requests.Session()
+        session.mount('https://', HTTPAdapter(max_retries=5))
+        request = session.get(url)
         if request.status_code == 200:
-            if 'ip' in request.json():
-                data = request.json()
+            data = request.json()
+            if 'ip' in data:
                 return data
             else:
                 console.print(f'{version}: not available.', style='bold red')
-                return {}
+                return None
+        else:
+            console.print(f'{version}: not available.', style='bold red')
+            return None
 
     except Exception as e:
         console.print(f'{version}: not available.', style='bold red')
-        return {}
+        return None
 
 
 def print_ipleak_data(name: str, data: dict) -> None:
@@ -45,7 +51,7 @@ def print_ipleak_data(name: str, data: dict) -> None:
 def ipv4():
     with console.status('[bold green]Getting IPv4...') as status:
         data = get_ipleak_url("IPv4", url_ipv4)
-        if data is not {}:
+        if data is not None:
             print_ipleak_data("IPv4", data)
 
 
@@ -53,7 +59,7 @@ def ipv4():
 def ipv6():
     with console.status('[bold green]Getting IPv6...') as status:
         data = get_ipleak_url("IPv6", url_ipv6)
-        if data is not {}:
+        if data is not None:
             print_ipleak_data("IPv6", data)
 
 
@@ -61,7 +67,7 @@ def ipv6():
 def dns():
     with console.status('[bold green]Getting DNS...') as status:
         data = get_ipleak_url("DNS", url_dns)
-        if data is not {}:
+        if data is not None:
             print_ipleak_data("DNS", data)
 
 
