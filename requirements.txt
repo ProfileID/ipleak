@@ -2,3 +2,4 @@ requests
 click
 typer
 rich
+pytest
