@@ -1,0 +1,19 @@
+{
+    "missing_ip": {},
+    "ip": {
+        "ip": "123.53.232.22"
+    },
+    "missing_country_name": {
+        "ip": "123.53.232.22",
+        "city_name": "test_city"
+    },
+    "missing_city_name": {
+        "ip": "123.53.232.22",
+        "country_name": "test_country"
+    },
+    "everything": {
+        "ip": "123.53.232.22",
+        "country_name": "test_country",
+        "city_name": "test_city"
+    }
+}

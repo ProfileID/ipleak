@@ -1,4 +1,3 @@
-from ipleak.tool import *
 from ipleak.app import app
 
 

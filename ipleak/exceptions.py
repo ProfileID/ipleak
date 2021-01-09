@@ -1,0 +1,2 @@
+class NoIPFound(Exception):
+    pass
