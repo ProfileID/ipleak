@@ -32,7 +32,3 @@ jobs:
     - name: Run tests
       run: |
         pytest
-        ipleak all
-        ipleak ipv4
-        ipleak ipv6
-        ipleak dns
